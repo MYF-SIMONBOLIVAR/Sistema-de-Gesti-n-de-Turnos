@@ -3,3 +3,4 @@ yagmail
 workalendar
 pandas
 fpdf
+python-dotenv
