@@ -2,3 +2,4 @@ streamlit
 yagmail
 workalendar
 pandas
+fpdf
