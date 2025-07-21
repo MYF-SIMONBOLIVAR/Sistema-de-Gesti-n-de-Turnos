@@ -41,7 +41,7 @@ def main():
             }
         </style>
         <div style='text-align: center; padding: 20px 10px; font-family: Arial, Helvetica, sans-serif;'>
-            <h1 style='color:#19277F; margin-bottom: 10px;'>MUELLES Y FRENOS SIMON BOLIVAR<br>Sistema de Turnos y Registros</h1>
+            <h1 style='color:#19277F; margin-bottom: 10px;'>MUELLES Y FRENOS SIMON BOLIVAR<br>SISTEMA DE TURNOS Y REGISTROS</h1>
            
         </div>""", unsafe_allow_html=True)
 # Línea decorativa
