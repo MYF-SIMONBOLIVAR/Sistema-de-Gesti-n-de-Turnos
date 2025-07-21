@@ -4,3 +4,4 @@ workalendar
 pandas
 fpdf
 python-dotenv
+XlsxWriter
