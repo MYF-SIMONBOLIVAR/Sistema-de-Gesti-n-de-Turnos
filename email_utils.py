@@ -27,3 +27,16 @@ def enviar_correo_familia(nombre_empleado, fecha, email_jefe):
     <p>Empleado: <b>{nombre_empleado}</b><br>
     Fecha: <b>{fecha}</b></p>"""
     yag.send(to=email_jefe, subject=asunto, contents=cuerpo)
+
+def enviar_correo_incapacidad(archivo, destinatario, nombre, fecha, area_pe):
+    yag = yagmail.SMTP(EMAIL, EMAIL_PASSWORD)
+    asunto = f"Incapacidad - {nombre}"
+    cuerpo = f"""<h3>Incapacidad registrada</h3>
+    <p>Empleado: <b>{nombre}</b><br>
+    Fecha: <b>{fecha}</b><br>
+    Área Personal: <b>{area_pe}</b></p>"""
+    
+    if archivo:
+        yag.send(to=destinatario, subject=asunto, contents=[cuerpo, archivo])
+    else:
+        yag.send(to=destinatario, subject=asunto, contents=cuerpo)
