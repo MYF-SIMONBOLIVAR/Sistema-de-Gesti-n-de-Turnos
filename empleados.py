@@ -1,9 +1,24 @@
 EMPLEADOS_POR_AREA = {
-    "Logistica": [
-        "DANIEL ALEJANDRO TILANO CADAVID", "LUIS DAVID ALVAREZ MUÑOZ", "JUAN DAVID GRACIANO USUGA",
-        "Juan Jose", "Brandon", "DANILO SANCHEZ GIL", "ALEJANDRO GALLEGO MONTOYA ", "JHONATAN TORRES URIBE",
-        "Cristian Restrepo", "Sebastián López", "ALEJANDRO PABON PABON ", "Sebastián Vargas",
-        "JAIRO ALONSO PINO GIRALDO", "Jhonatan Saldarriaga", "Juan Pablo Beltrán", "MARLON ANDRES MENDOZA DIAZ "
+    "PICKING - CEDI": [
+        "Luis David", "Cristian Ramirez", "Jhonatan Gonzalez",
+        "Cristian Acevedo", "Sebastian Chanci", "Julian Londoño"
+    ],
+    "INVENTARIOS - CEDI":[
+        "MATEO USUGA","LEIDY BORJA","ALDER"
+    ],
+    "RECEPCIÓN":[
+        "MATEO HENAO","ELKIN CHARRIS","ADREX HIGUITA","DANIEL TILANO"
+    ],
+    " FACTURACIÓN":[
+        "ALEJANDRA HOYOS"
+    ],
+    "LOGÍSTICA":[
+        "ENRIQUE TOBON","JUAN DAVID GRACIANO","ELKIN RAMIREZ"
+    ],
+
+    "Compras": [
+        "STEFANY JIMENEZ PATIÑO", "KELLY JOHANA SALGADO SALGADO ", "JUAN CAMILO GOMEZ RAMIREZ",
+        "GERLEIN ESCOBAR ACEVEDO", "YOHALIZETH CAROLINA MARTINEZ GUTIERREZ "
     ],
     "Compras": [
         "STEFANY JIMENEZ PATIÑO", "KELLY JOHANA SALGADO SALGADO ", "JUAN CAMILO GOMEZ RAMIREZ",
