@@ -286,7 +286,8 @@ def main():
                         "archivo": archivo.name
                     }
                     # Llamar a la función para enviar el correo con el archivo adjunto
-                enviar_correo_incapacidad(archivo, destinatario, nombre, fecha, area_pe)
+                    enviar_correo_incapacidad(archivo, destinatario, nombre, fecha, area_pe)
+                    st.success("Incapacidad enviada correctamente.")
                 
 if __name__ == "__main__":
     main()
