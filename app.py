@@ -67,7 +67,7 @@ def main():
             month = st.number_input("Mes", min_value=1, max_value=12, value=datetime.now().month)
 
         horarios_predefinidos = [
-            "7:00 AM - 4:00 PM","7:30AM - 5:00PM", "8:00 AM - 4:30 PM","9:00 AM - 6:00 PM", "9:00 AM - 12:30 PM", "8:00 AM - 2:00 PM","8:00 AM - 11:30 AM", "8:00 AM - 1:00 PM","8:00AM - 4:45PM"
+            "7:00 AM - 4:00 PM","7:00 AM - 4:30 PM", "8:00 AM - 5:30 PM", "7:30AM - 5:00PM", "8:00 AM - 4:30 PM","9:00 AM - 6:00 PM", "9:00 AM - 12:30 PM", "8:00 AM - 2:00 PM","8:00 AM - 11:30 AM", "8:00 AM - 1:00 PM","8:00AM - 4:45PM"
         ]
         horarios_seleccionados = st.multiselect("Selecciona horarios de trabajo de Lunes a Viernes", horarios_predefinidos)
         horario_personalizado = st.text_input("Agregar otro horario (opcional)")
