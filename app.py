@@ -47,7 +47,7 @@ def main():
 # Línea decorativa
     st.markdown("<hr style='border: none; height: 4px; background-color: #fab70e;'>", unsafe_allow_html=True)
 
-    tabs = st.tabs(["Turnos", "Horas Extra", "Día de la Familia","Permisos"])
+    tabs = st.tabs(["Turnos", "Horas Extra", "Día de la Familia","Permisos","Incapacidades"])
 
 #Turnos
     with tabs[0]:
@@ -254,7 +254,38 @@ def main():
                 enviar_correo_permiso(registro)
                 # Mostrar mensaje de éxito
                 st.success("Permiso registrado y notificacion enviada correctamente.")
-
+#Incapacidades
+    with tabs[4]:
+        st.markdown("<h3 style='color: #19277F;'>Registrar Incapacidad 🏥</h3>", unsafe_allow_html=True)
+       
+        nombre= st.text_input("Nombre empleado", key="in_nombre")
+        fecha = st.date_input("Fecha de registro de la incapacidad", key="in_fecha")          
+        area_pe = st.selectbox("Área de trabajo", ["Logistica","Compras","Ventas","Marketing","Mensajeria","Juridica","Gestion Humana","SST","TI"], key="in_area")     
+        
+        st.subheader("Adjuntar documento")
+        archivo = st.file_uploader("Selecciona un archivo", type=["pdf", "jpg", "jpeg", "png", "docx", "xlsx"])
+        
+        # Definir el correo del destinatario
+        destinatario = "sebastianvibr@gmail.com"  
+        
+        if archivo is not None:
+            # Muestra el nombre del archivo cargado
+            st.write(f"Archivo cargado: {archivo.name}")
+            
+            # Botón para enviar el correo
+            if st.button("Enviar por correo"):
+                # Enviar el archivo por correo
+                if not nombre or not fecha or not area_pe:
+                    st.error("Completa todos los campos antes de enviar la incapacidad.")
+                else:
+                    registro = {
+                        "nombre": nombre,
+                        "fecha": fecha,
+                        "area": area_pe,
+                        "archivo": archivo.name
+                    }
+                    # Llamar a la función para enviar el correo con el archivo adjunto
+                enviar_correo_incapacidad(archivo, destinatario, nombre, fecha, area_pe)
                 
 if __name__ == "__main__":
     main()
