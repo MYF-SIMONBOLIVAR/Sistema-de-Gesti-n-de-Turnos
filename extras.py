@@ -86,12 +86,12 @@ def enviar_correo_horas_extra_agrupado(registros):
          "\n\nAtentamente,\nÁrea de TI"
     )
     yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
-# generar PDF de horas extra
+
 # generar PDF de horas extra
 def generar_pdf_horas_extra(registros):
     pdf = FPDF()
     pdf.add_page()
-    pdf.image("plantillaSM.png", x=0, y=0, w=210, h=297)
+    pdf.image("images/plantillaSM.png", x=0, y=0, w=210, h=297)
     pdf.set_font("Arial", size=12)
     pdf.cell(0, 10, "Reporte de Horas Extra", ln=True, align="C")
     pdf.ln(10)
