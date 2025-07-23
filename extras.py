@@ -91,7 +91,7 @@ def enviar_correo_horas_extra_agrupado(registros):
 def generar_pdf_horas_extra(registros):
     pdf = FPDF()
     pdf.add_page()
-   
+    pdf.image("plantillaSM.png", x=0, y=0, w=210, h=297)
     pdf.set_font("Arial", size=12)
     pdf.cell(0, 10, "Reporte de Horas Extra", ln=True, align="C")
     pdf.ln(10)
