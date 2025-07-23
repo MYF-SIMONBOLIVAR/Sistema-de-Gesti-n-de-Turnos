@@ -16,6 +16,7 @@ from datetime import datetime
 from io import BytesIO
 from empleados import EMPLEADOS_POR_AREA
 from email_utils import enviar_correo_incapacidad
+from correos import CORREOS_JEFES
 
 ARCHIVO_DIA_FAMILIA = "dia_familia.json"
 # Generar un archivo Excel para descarga
