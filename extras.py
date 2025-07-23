@@ -4,7 +4,8 @@ import os
 from datetime import datetime
 from fpdf import FPDF
 from dotenv import load_dotenv
-
+import streamlit as st
+import io
 # Cargar las variables desde el archivo .env
 load_dotenv()
 
