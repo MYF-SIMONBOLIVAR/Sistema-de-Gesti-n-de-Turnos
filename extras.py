@@ -156,7 +156,10 @@ def generar_pdf_dia_familia(registros):
     return pdf.output(dest='S').encode('latin1')
 # enviar permisos
 def enviar_correo_permiso(registro):
-    yag = yagmail.SMTP(EMAIL_REMITENTE, EMAIL_P)
+    # Usar el correo ingresado por el usuario en el campo "Correo del jefe directo"
+    destinatario = registro["correo_jefe"]
+    
+    # Configurar el asunto y el cuerpo del correo
     asunto = f"Solicitud de Permiso - {registro['nombre']}"
     cuerpo = f"""<h3>Solicitud de Permiso</h3>
     <p>Cordial saludo,<br>
@@ -165,7 +168,10 @@ def enviar_correo_permiso(registro):
     Tipo de permiso: <b>{registro['tipo']}</b></p>
     <p>Quedamos atentos a cualquier comentario o requerimiento adicional.</p>
     <p>Atentamente,<br>Área de TI</p>"""
-    yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
+
+    # Enviar el correo
+    yag = yagmail.SMTP(EMAIL_REMITENTE, EMAIL_P)
+    yag.send(to=destinatario, subject=asunto, contents=cuerpo)
 # generar PDF de permisos
 def generar_pdf_permiso(registro):
     pdf = FPDF()
