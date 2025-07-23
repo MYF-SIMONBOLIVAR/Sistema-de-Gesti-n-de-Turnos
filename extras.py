@@ -132,12 +132,26 @@ def generar_pdf_horas_extra(registros):
     pdf.set_font("Arial", style='B', size=12)
     pdf.cell(0, 10, f"Total general de horas extra: {total_general}", ln=True, align="C")
 
-    # Guardar el PDF en un buffer de memoria
+    # Guardar el PDF en un buffer de memoria (BytesIO)
     pdf_output = io.BytesIO()
-    pdf.output(pdf_output)
-    pdf_output.seek(0)
+    pdf.output(pdf_output, 'F').encode()  # 'F' para escribir en el buffer de memoria
 
+    # Retornar el buffer con el PDF
+    pdf_output.seek(0)
     return pdf_output
+
+
+
+# Llamar a la función para generar el PDF
+pdf_buffer = generar_pdf_horas_extra(registros)
+
+# Crear el botón de descarga en Streamlit
+st.download_button(
+    label="Descargar PDF Horas Extra",
+    data=pdf_buffer,
+    file_name="reporte_horas_extra.pdf",
+    mime="application/pdf"
+)
 
 # registrar días de la familia
 def registrar_dia_familia(empleado, fecha, area, archivo):
