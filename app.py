@@ -237,13 +237,14 @@ def main():
         nombre = st.text_input("Nombre empleado", key="pe_nombre")
         fecha = st.date_input("Fecha del Permiso", key="pe_fecha")          
         area_pe = st.selectbox("Área de trabajo", ["Logistica","Compras","Ventas","Marketing","Mensajeria","Juridica","Gestion Humana","SST","TI"], key="pe_area")
+        correo_jefe = st.text_input("Correo del jefe directo", key="pe_correo")
         #Botón para registrar y enviar el permiso
         if st.button("Registrar y enviar permiso"):
             if not nombre or not fecha or not area_pe or tipo_permiso == "Seleccione un tipo":
                 # Mostrar mensaje de error si falta información
                 st.error("Completa todos los campos para registrar el permiso.")
             else:
-                registro = {"nombre": nombre, "fecha": fecha, "area": area_pe, "tipo": tipo_permiso}
+                registro = {"nombre": nombre, "fecha": fecha, "area": area_pe, "tipo": tipo_permiso, "correo_jefe": correo_jefe}
                 #generar pdf registo del permiso
                 pdf = generar_pdf_permiso(registro)
                 st.download_button(
