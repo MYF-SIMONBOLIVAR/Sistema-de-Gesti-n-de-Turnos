@@ -236,8 +236,23 @@ def main():
         #Campos para ingresar datos del permiso
         nombre = st.text_input("Nombre empleado", key="pe_nombre")
         fecha = st.date_input("Fecha del Permiso", key="pe_fecha")          
-        area_pe = st.selectbox("Área de trabajo", ["Logistica","Compras","Ventas","Marketing","Mensajeria","Juridica","Gestion Humana","SST","TI"], key="pe_area")
-        correo_jefe = st.text_input("Correo del jefe directo", key="pe_correo")
+         # Campo para seleccionar área de trabajo
+        area_pe = st.selectbox(
+            "Área de trabajo",
+            ["Seleccione un área"] + list(CORREOS_JEFES.keys()),  # Mostrar las áreas disponibles
+            key="pe_area"
+        )
+
+        # Al seleccionar un área, el campo de correo del jefe se actualiza automáticamente
+        if area_pe != "Seleccione un área":
+            correo_jefe = CORREOS_JEFES[area_pe]
+        else:
+            correo_jefe = ""  # Si no se selecciona área, dejar vacío
+
+        # Campo de correo del jefe (se completa automáticamente)
+        correo_jefe_input = st.text_input("Correo del jefe directo", value=correo_jefe, key="pe_correo")
+
+        # Mostrar el correo automáticamente cuando se elige un área
         #Botón para registrar y enviar el permiso
         if st.button("Registrar y enviar permiso"):
             if not nombre or not fecha or not area_pe or tipo_permiso == "Seleccione un tipo":
