@@ -87,11 +87,14 @@ def enviar_correo_horas_extra_agrupado(registros):
     yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
 # generar PDF de horas extra
 def generar_pdf_horas_extra(registros):
+    # Crear el objeto PDF en memoria
     pdf = FPDF()
     pdf.add_page()
 
-    # Verificar si la imagen existe antes de intentar cargarla
+    # Ruta de la imagen
     imagen_path = "images/plantillaSM.png"
+
+    # Verificar si la imagen existe
     if os.path.exists(imagen_path):
         try:
             pdf.image(imagen_path, x=0, y=0, w=210, h=297)
@@ -103,7 +106,7 @@ def generar_pdf_horas_extra(registros):
         print(f"El archivo de imagen '{imagen_path}' no se encuentra en el directorio.")
         pdf.set_font("Arial", size=12)
         pdf.cell(0, 10, "Reporte de Horas Extra (Imagen no encontrada)", ln=True, align="C")
-    
+
     # Títulos y formato
     pdf.ln(10)
     pdf.set_font("Arial", size=12)
@@ -111,10 +114,7 @@ def generar_pdf_horas_extra(registros):
     pdf.ln(5)
 
     total_general = 0
-    
-    # Iterar sobre los registros y agregar los detalles al PDF
     for r in registros:
-        # Suponiendo que 'r' tiene las claves 'empleado', 'horas' y 'total'
         empleado = r.get('empleado', 'Desconocido')
         horas_extra = r.get('horas', 0)
         total_horas = r.get('total', 0)
@@ -127,14 +127,16 @@ def generar_pdf_horas_extra(registros):
 
         total_general += total_horas
 
-    # Agregar un resumen al final
+    # Agregar el total general al final
     pdf.set_font("Arial", style='B', size=12)
     pdf.cell(0, 10, f"Total general de horas extra: {total_general}", ln=True, align="C")
-    
-    # Guardar el archivo PDF
-    pdf_output = "reporte_horas_extra.pdf"
+
+    # Guardar el PDF en un buffer de memoria
+    pdf_output = io.BytesIO()
     pdf.output(pdf_output)
-    print(f"PDF generado: {pdf_output}")
+    pdf_output.seek(0)
+
+    return pdf_output
 
 # registrar días de la familia
 def registrar_dia_familia(empleado, fecha, area, archivo):
