@@ -84,7 +84,7 @@ def main():
         if horario_personalizado.strip():
             horarios_finales.append(horario_personalizado.strip())
 
-        #Botón para generar los turnos
+        # Botón para generar los turnos
         if st.button("Generar Turnos"):
             if not empleados:
                 # Mostrar mensaje de error si no hay empleados
@@ -93,17 +93,19 @@ def main():
                 # Mostrar mensaje de error si no hay horarios
                 st.error("Por favor, selecciona o ingresa al menos un horario antes de generar los turnos.")
             else:
-                # Asignar turnos y descansos
-                turnos = asignar_turnos(empleados, year, month, horarios_finales,trabajan_sabado, horarios_seleccionadossabado)
-                all_turnos, all_descansos = [], []
+                # Asignar turnos sin considerar los días de descanso
+                turnos = asignar_turnos(empleados, year, month, horarios_finales, trabajan_sabado, horarios_seleccionadossabado)
+                all_turnos = []  # Solo turnos laborales, sin descansos
+
                 for empleado, lista in turnos.items():
                     for t in lista:
-                        all_turnos.append({"Empleado": empleado, "Fecha": t["fecha"], "Turno": t["turno"]})
-                        if isinstance(t["turno"], str) and t["turno"].lower() == "descanso":
+                        # Solo agregar los turnos de trabajo, excluyendo los descansos
+                        if isinstance(t["turno"], str) and t["turno"].lower() != "descanso":
+                            all_turnos.append({"Empleado": empleado, "Fecha": t["fecha"], "Turno": t["turno"]})
 
-                            all_descansos.append({"Empleado": empleado, "Fecha de Descanso": t["fecha"]})
+                # Guardar los turnos en el DataFrame de la sesión
                 st.session_state["df_turnos"] = pd.DataFrame(all_turnos)
-                st.session_state["df_descansos"] = pd.DataFrame(all_descansos) if all_descansos else None
+                st.session_state["df_descansos"] = None  # No hay descansos
 
         if "df_turnos" in st.session_state:
             df = st.session_state["df_turnos"]
