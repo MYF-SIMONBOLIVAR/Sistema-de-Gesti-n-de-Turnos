@@ -87,71 +87,31 @@ def enviar_correo_horas_extra_agrupado(registros):
     )
     yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
 # generar PDF de horas extra
+# generar PDF de horas extra
 def generar_pdf_horas_extra(registros):
-    # Crear el objeto PDF en memoria
     pdf = FPDF()
     pdf.add_page()
-
-    # Ruta de la imagen
-    imagen_path = "images/plantillaSM.png"
-
-    # Verificar si la imagen existe
-    if os.path.exists(imagen_path):
-        try:
-            pdf.image(imagen_path, x=0, y=0, w=210, h=297)
-        except Exception as e:
-            print(f"Error al cargar la imagen: {e}")
-            pdf.set_font("Arial", size=12)
-            pdf.cell(0, 10, "Reporte de Horas Extra (Imagen no encontrada)", ln=True, align="C")
-    else:
-        print(f"El archivo de imagen '{imagen_path}' no se encuentra en el directorio.")
-        pdf.set_font("Arial", size=12)
-        pdf.cell(0, 10, "Reporte de Horas Extra (Imagen no encontrada)", ln=True, align="C")
-
-    # Títulos y formato
+    pdf.image("plantillaSM.png", x=0, y=0, w=210, h=297)
+    pdf.set_font("Arial", size=12)
+    pdf.cell(0, 10, "Reporte de Horas Extra", ln=True, align="C")
     pdf.ln(10)
     pdf.set_font("Arial", size=12)
     pdf.multi_cell(0, 10, "Cordial saludo,\nSe informa que se han registrado las siguientes horas extra:")
     pdf.ln(5)
-
     total_general = 0
     for r in registros:
-        empleado = r.get('empleado', 'Desconocido')
-        horas_extra = r.get('horas', 0)
-        total_horas = r.get('total', 0)
-
-        pdf.set_font("Arial", size=12)
-        pdf.cell(0, 10, f"Empleado: {empleado}", ln=True)
-        pdf.cell(0, 10, f"Horas extra: {horas_extra}", ln=True)
-        pdf.cell(0, 10, f"Total horas: {total_horas}", ln=True)
+        valor_hora = VALOR_HORA_EXTRA_DIURNA if r["tipo"] == "diurnas" else VALOR_HORA_EXTRA_NOCTURNA
+        total = r["horas"] * valor_hora
+        total_general += total
+        pdf.cell(0, 10, f"Empleado: {r['empleado']}", ln=True)
+        pdf.cell(0, 10, f"Área: {r.get('area','')}", ln=True)
+        pdf.cell(0, 10, f"Fecha: {r['fecha']}", ln=True)
+        pdf.cell(0, 10, f"Horas {r['tipo']}: {r['horas']} (Total: ${total:,.0f})", ln=True)
         pdf.ln(5)
-
-        total_general += total_horas
-
-    # Agregar el total general al final
-    pdf.set_font("Arial", style='B', size=12)
-    pdf.cell(0, 10, f"Total general de horas extra: {total_general}", ln=True, align="C")
-
-    # Guardar el PDF en un buffer de memoria (BytesIO)
-    pdf_output = io.BytesIO()
-    pdf.output(pdf_output, 'F').encode()  # 'F' para escribir en el buffer de memoria
-
-    # Retornar el buffer con el PDF
-    pdf_output.seek(0)
-    return pdf_output
-
-
-
-# Llamar a la función para generar el PDF
-pdf_buffer = generar_pdf_horas_extra(registros)
-
-# Crear el botón de descarga en Streamlit
-st.download_button(
-    label="Descargar PDF Horas Extra",
-    data=pdf_buffer,
-    file_name="reporte_horas_extra.pdf",
-    mime="application/pdf"
-)
+    pdf.set_font("Arial", size=12)
+    pdf.multi_cell(0, 10, "Quedamos atentos a cualquier comentario o requerimiento adicional.")
+    pdf.cell(0, 10, "Atentamente,\nÁrea de TI", ln=True)
+    return pdf.output(dest='S').encode('latin1')
 
 # registrar días de la familia
 def registrar_dia_familia(empleado, fecha, area, archivo):
