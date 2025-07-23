@@ -91,7 +91,7 @@ def generar_pdf_horas_extra(registros):
     pdf.add_page()
 
     # Verificar si la imagen existe antes de intentar cargarla
-    imagen_path = "plantillaSM.png"
+    imagen_path = "images/plantillaSM.png"
     if os.path.exists(imagen_path):
         try:
             pdf.image(imagen_path, x=0, y=0, w=210, h=297)
