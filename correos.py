@@ -7,6 +7,6 @@ CORREOS_JEFES = {
     "Despachos": "despachos@repuestossimonbolivar.com",
     "Juridica": "juridica@empresa.com",
     "Gestion Humana": "directoradministrativo@repuestossimonbolivar.com",
-    "SST": "sst@empresa.com",
+    "SST": "sst@repuestossimonbolivar.com",
     "TI": "tic2@repuestossimonbolivar.com"
 }
