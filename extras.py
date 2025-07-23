@@ -89,27 +89,53 @@ def enviar_correo_horas_extra_agrupado(registros):
 def generar_pdf_horas_extra(registros):
     pdf = FPDF()
     pdf.add_page()
-    pdf.image("plantillaSM.png", x=0, y=0, w=210, h=297)
-    pdf.set_font("Arial", size=12)
-    pdf.cell(0, 10, "Reporte de Horas Extra", ln=True, align="C")
+
+    # Verificar si la imagen existe antes de intentar cargarla
+    imagen_path = "plantillaSM.png"
+    if os.path.exists(imagen_path):
+        try:
+            pdf.image(imagen_path, x=0, y=0, w=210, h=297)
+        except Exception as e:
+            print(f"Error al cargar la imagen: {e}")
+            pdf.set_font("Arial", size=12)
+            pdf.cell(0, 10, "Reporte de Horas Extra (Imagen no encontrada)", ln=True, align="C")
+    else:
+        print(f"El archivo de imagen '{imagen_path}' no se encuentra en el directorio.")
+        pdf.set_font("Arial", size=12)
+        pdf.cell(0, 10, "Reporte de Horas Extra (Imagen no encontrada)", ln=True, align="C")
+    
+    # Títulos y formato
     pdf.ln(10)
     pdf.set_font("Arial", size=12)
     pdf.multi_cell(0, 10, "Cordial saludo,\nSe informa que se han registrado las siguientes horas extra:")
     pdf.ln(5)
+
     total_general = 0
+    
+    # Iterar sobre los registros y agregar los detalles al PDF
     for r in registros:
-        valor_hora = VALOR_HORA_EXTRA_DIURNA if r["tipo"] == "diurnas" else VALOR_HORA_EXTRA_NOCTURNA
-        total = r["horas"] * valor_hora
-        total_general += total
-        pdf.cell(0, 10, f"Empleado: {r['empleado']}", ln=True)
-        pdf.cell(0, 10, f"Área: {r.get('area','')}", ln=True)
-        pdf.cell(0, 10, f"Fecha: {r['fecha']}", ln=True)
-        pdf.cell(0, 10, f"Horas {r['tipo']}: {r['horas']} (Total: ${total:,.0f})", ln=True)
+        # Suponiendo que 'r' tiene las claves 'empleado', 'horas' y 'total'
+        empleado = r.get('empleado', 'Desconocido')
+        horas_extra = r.get('horas', 0)
+        total_horas = r.get('total', 0)
+
+        pdf.set_font("Arial", size=12)
+        pdf.cell(0, 10, f"Empleado: {empleado}", ln=True)
+        pdf.cell(0, 10, f"Horas extra: {horas_extra}", ln=True)
+        pdf.cell(0, 10, f"Total horas: {total_horas}", ln=True)
         pdf.ln(5)
-    pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, "Quedamos atentos a cualquier comentario o requerimiento adicional.")
-    pdf.cell(0, 10, "Atentamente,\nÁrea de TI", ln=True)
-    return pdf.output(dest='S').encode('latin1')
+
+        total_general += total_horas
+
+    # Agregar un resumen al final
+    pdf.set_font("Arial", style='B', size=12)
+    pdf.cell(0, 10, f"Total general de horas extra: {total_general}", ln=True, align="C")
+    
+    # Guardar el archivo PDF
+    pdf_output = "reporte_horas_extra.pdf"
+    pdf.output(pdf_output)
+    print(f"PDF generado: {pdf_output}")
+
 # registrar días de la familia
 def registrar_dia_familia(empleado, fecha, area, archivo):
     registros = cargar_registros(archivo)
