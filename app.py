@@ -16,7 +16,7 @@ from extras import (
 from datetime import datetime, timedelta
 from io import BytesIO
 from empleados import EMPLEADOS_POR_AREA
-from email_utils import enviar_correo_incapacidad,enviar_correo_vacaciones
+
 from correos import CORREOS_JEFES
 # Constantes para archivos
 ARCHIVO_DIA_FAMILIA = "dia_familia.json"
@@ -310,6 +310,7 @@ if __name__ == "__main__":
         </div>
      """, unsafe_allow_html=True)
                       
+
 
 
 
