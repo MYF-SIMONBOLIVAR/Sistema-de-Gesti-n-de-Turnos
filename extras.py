@@ -86,10 +86,27 @@ def enviar_correo_horas_extra_agrupado(registros):
     total_general = 0
 
     for r in registros:
-        # Verificar si el medio de pago es tiempo, si es así no calcular el valor
+        # Si el pago es 'tiempo', no calcular el valor pero aún así notificar
         if r.get("pago") == "tiempo":
-            continue  # Si el pago es 'tiempo', no se genera valor ni se incluye en el correo
+            tiempo_str = ""
+            if r["horas_int"] > 0:
+                tiempo_str += f"{r['horas_int']}h "
+            if r["minutos"] > 0:
+                tiempo_str += f"{r['minutos']}m"
 
+            cuerpo += (
+                f"<li>"
+                f"<b>{r['empleado']}</b> | "
+                f"Área: <b>{r.get('area','N/A')}</b> | "
+                f"Pago: <b>Tiempo</b> | "  # Indicamos que es "Tiempo"
+                f"Fecha: <b>{r['fecha']}</b> | "
+                f"Tiempo {r['tipo']}: <b>{tiempo_str.strip()}</b> | "
+                f"Total: <b>Sin valor asignado</b>"  # No mostrar valor monetario
+                f"</li>"
+            )
+            continue  # No calcular el total para registros con pago 'tiempo'
+
+        # Si el pago no es 'tiempo', calcular el valor
         valor_hora = VALOR_HORA_EXTRA_DIURNA if r["tipo"] == "diurnas" else VALOR_HORA_EXTRA_NOCTURNA
         total = r["horas"] * valor_hora
         total_general += total
@@ -120,11 +137,9 @@ def enviar_correo_horas_extra_agrupado(registros):
         "\n\nAtentamente,\nÁrea de TI"
     )
 
-    # Enviar el correo solo si hay horas extra pagadas
-    if total_general > 0:
-        yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
-    else:
-        print("No se generaron horas extra pagadas, no se envió el correo.")
+    # Enviar el correo solo si hay horas extra registradas (aunque sean en 'tiempo' o 'pago')
+    yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
+
 
 # -------------------------------
 # Generar PDF con horas extra
@@ -296,6 +311,7 @@ def enviar_correo_vacaciones(registro):
     <p>Atentamente,<br>Área de TI</p>"""
     
     
+
 
 
 
