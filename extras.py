@@ -87,7 +87,7 @@ def enviar_correo_horas_extra_agrupado(registros):
 
     for r in registros:
         # Verificar si el pago es 'tiempo' y no calcular valor
-        if r.get("pago") == "tiempo":
+        if r.get("pago") == "Tiempo":
             tiempo_str = ""
             if r["horas_int"] > 0:
                 tiempo_str += f"{r['horas_int']}h "
@@ -312,6 +312,7 @@ def enviar_correo_vacaciones(registro):
     <p>Atentamente,<br>Área de TI</p>"""
     
     
+
 
 
 
