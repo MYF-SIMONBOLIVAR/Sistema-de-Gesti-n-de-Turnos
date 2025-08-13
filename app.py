@@ -53,7 +53,7 @@ def main():
 
     st.markdown("<hr style='border: none; height: 4px; background-color: #fab70e;'>", unsafe_allow_html=True)
 # Crear pestañas para las diferentes funcionalidades
-    tabs = st.tabs(["Turnos", "Tiempo Extra", "Día de la Familia", "Permisos", "Incapacidades", "Vacaciones"])
+    tabs = st.tabs(["Turnos", "Tiempo Extra"])
 # Asignar turnos
     with tabs[0]:
         st.markdown("<h3 style='color: #19277F;'>Asignar Turnos ⏰</h3>", unsafe_allow_html=True)
@@ -310,6 +310,7 @@ if __name__ == "__main__":
         </div>
      """, unsafe_allow_html=True)
                       
+
 
 
 
