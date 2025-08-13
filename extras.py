@@ -86,6 +86,10 @@ def enviar_correo_horas_extra_agrupado(registros):
     total_general = 0
 
     for r in registros:
+        # Verificar si el medio de pago es tiempo, si es así no calcular el valor
+        if r.get("pago") == "tiempo":
+            continue  # Si el pago es 'tiempo', no se genera valor ni se incluye en el correo
+
         valor_hora = VALOR_HORA_EXTRA_DIURNA if r["tipo"] == "diurnas" else VALOR_HORA_EXTRA_NOCTURNA
         total = r["horas"] * valor_hora
         total_general += total
@@ -116,7 +120,11 @@ def enviar_correo_horas_extra_agrupado(registros):
         "\n\nAtentamente,\nÁrea de TI"
     )
 
-    yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
+    # Enviar el correo solo si hay horas extra pagadas
+    if total_general > 0:
+        yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
+    else:
+        print("No se generaron horas extra pagadas, no se envió el correo.")
 
 # -------------------------------
 # Generar PDF con horas extra
@@ -288,5 +296,6 @@ def enviar_correo_vacaciones(registro):
     <p>Atentamente,<br>Área de TI</p>"""
     
     
+
 
 
