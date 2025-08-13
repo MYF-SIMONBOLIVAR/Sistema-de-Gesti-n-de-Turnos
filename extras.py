@@ -86,7 +86,7 @@ def enviar_correo_horas_extra_agrupado(registros):
     total_general = 0
 
     for r in registros:
-        # Si el pago es 'tiempo', no calcular el valor pero aún así notificar
+        # Verificar si el pago es 'tiempo' y no calcular valor
         if r.get("pago") == "tiempo":
             tiempo_str = ""
             if r["horas_int"] > 0:
@@ -98,15 +98,15 @@ def enviar_correo_horas_extra_agrupado(registros):
                 f"<li>"
                 f"<b>{r['empleado']}</b> | "
                 f"Área: <b>{r.get('area','N/A')}</b> | "
-                f"Pago: <b>Tiempo</b> | "  # Indicamos que es "Tiempo"
+                f"Pago: <b>Tiempo</b> | "  # Pago en tiempo
                 f"Fecha: <b>{r['fecha']}</b> | "
                 f"Tiempo {r['tipo']}: <b>{tiempo_str.strip()}</b> | "
-                f"Total: <b>No aplica valor monetario</b>"  # Sin mostrar el valor
+                f"Total: <b>No aplica valor monetario</b>"  # No muestra el valor
                 f"</li>"
             )
-            continue  # No calcular el total para registros con pago 'tiempo'
+            continue  # No procesar más detalles de cálculo de valor para pago "tiempo"
 
-        # Si el pago no es 'tiempo', calcular el valor
+        # Si no es 'tiempo', calcular el valor para horas extra
         valor_hora = VALOR_HORA_EXTRA_DIURNA if r["tipo"] == "diurnas" else VALOR_HORA_EXTRA_NOCTURNA
         total = r["horas"] * valor_hora
         total_general += total
@@ -125,7 +125,7 @@ def enviar_correo_horas_extra_agrupado(registros):
             f"Pago: <b>{r.get('pago','N/A')}</b> | "
             f"Fecha: <b>{r['fecha']}</b> | "
             f"Tiempo {r['tipo']}: <b>{tiempo_str.strip()}</b> | "
-            f"Total: <b>${total:,.0f}</b>"  # Mostrar el valor solo si no es "tiempo"
+            f"Total: <b>${total:,.0f}</b>"  # Solo mostrar valor si no es "tiempo"
             f"</li>"
         )
 
@@ -137,8 +137,9 @@ def enviar_correo_horas_extra_agrupado(registros):
         "\n\nAtentamente,\nÁrea de TI"
     )
 
-    # Enviar el correo solo si hay horas extra registradas (aunque sean en 'tiempo' o 'pago')
+    # Enviar el correo solo si hay horas extra registradas
     yag.send(to=EMAIL_DESTINATARIO, subject=asunto, contents=cuerpo)
+
 
 
 # -------------------------------
@@ -311,6 +312,7 @@ def enviar_correo_vacaciones(registro):
     <p>Atentamente,<br>Área de TI</p>"""
     
     
+
 
 
 
