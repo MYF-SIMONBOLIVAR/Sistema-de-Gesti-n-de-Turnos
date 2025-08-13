@@ -101,7 +101,7 @@ def enviar_correo_horas_extra_agrupado(registros):
                 f"Pago: <b>Tiempo</b> | "  # Indicamos que es "Tiempo"
                 f"Fecha: <b>{r['fecha']}</b> | "
                 f"Tiempo {r['tipo']}: <b>{tiempo_str.strip()}</b> | "
-                f"Total: <b>Sin valor asignado</b>"  # No mostrar valor monetario
+                f"Total: <b>No aplica valor monetario</b>"  # Sin mostrar el valor
                 f"</li>"
             )
             continue  # No calcular el total para registros con pago 'tiempo'
@@ -125,7 +125,7 @@ def enviar_correo_horas_extra_agrupado(registros):
             f"Pago: <b>{r.get('pago','N/A')}</b> | "
             f"Fecha: <b>{r['fecha']}</b> | "
             f"Tiempo {r['tipo']}: <b>{tiempo_str.strip()}</b> | "
-            f"Total: <b>${total:,.0f}</b>"
+            f"Total: <b>${total:,.0f}</b>"  # Mostrar el valor solo si no es "tiempo"
             f"</li>"
         )
 
@@ -311,6 +311,7 @@ def enviar_correo_vacaciones(registro):
     <p>Atentamente,<br>Área de TI</p>"""
     
     
+
 
 
 
