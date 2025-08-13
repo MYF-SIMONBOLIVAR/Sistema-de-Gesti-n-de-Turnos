@@ -48,7 +48,7 @@ def main():
             }
         </style>
         <div style='text-align: center; padding: 20px 10px; font-family: Arial, Helvetica, sans-serif;'>
-            <h1 style='color:#19277F; margin-bottom: 10px;'>MUELLES Y FRENOS SIMON BOLIVAR<br>Sistema de Turnos y Registros</h1>
+            <h1 style='color:#19277F; margin-bottom: 10px;'>MUELLES Y FRENOS SIMON BOLIVAR<br>Sistema de Turnos y Tiempo extra</h1>
         </div>""", unsafe_allow_html=True)
 
     st.markdown("<hr style='border: none; height: 4px; background-color: #fab70e;'>", unsafe_allow_html=True)
@@ -310,6 +310,7 @@ if __name__ == "__main__":
         </div>
      """, unsafe_allow_html=True)
                       
+
 
 
 
