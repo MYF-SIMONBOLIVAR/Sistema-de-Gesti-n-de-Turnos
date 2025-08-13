@@ -49,7 +49,7 @@ def main():
 # Línea decorativa
     st.markdown("<hr style='border: none; height: 4px; background-color: #fab70e;'>", unsafe_allow_html=True)
 
-    tabs = st.tabs(["Turnos", "Horas Extra", "Día de la Familia","Permisos","Incapacidades"])
+    tabs = st.tabs(["Turnos", "Horas Extra"])
 
 #Turnos
     with tabs[0]:
@@ -181,133 +181,7 @@ def main():
                     # Mostrar mensaje de éxito
                     st.success("Horas extra registradas y correo enviado.")
 
-#Día de la Familia
-    with tabs[2]:
-        #titulo de la pestaña
-        st.markdown("<h3 style='color: #19277F;'>Solicitar Día de la Familia 🏠</h3>", unsafe_allow_html=True)
-       
-        num2 = st.number_input("¿Cuántos empleados solicitan el día de la familia?", 1, 20, 1)
-        filas = []
-        for i in range(num2):
-            st.markdown(f"**Empleado #{i+1}**")
-            cols = st.columns(3)
-            #Campos para ingresar datos del empleado
-            with cols[0]: nombre = st.text_input("Empleado", key=f"df_nombre_{i}")
-            with cols[1]: fecha = st.date_input("Fecha solicitada", key=f"df_fecha_{i}")
-            with cols[2]: area_df = st.selectbox("Área de trabajo", ["Logistica","Compras","Ventas","Marketing","Mensajeria","Juridica","Gestion Humana","SST","TI"], key=f"df_area_{i}")
-            filas.append((nombre, fecha, area_df))
-        #Botón para registrar y enviar el día de la familia
-        if st.button("Registrar y enviar dia de la familia"):
-            registros = []
-            historial = cargar_registros(ARCHIVO_DIA_FAMILIA)  
-            empleados_alerta = []
-            for nombre, fecha, area_df in filas:
-                if not nombre:
-                    st.error("Completa todos los campos.")
-                    break
-                # Contar cuántas veces está el empleado en el historial
-                veces = sum(1 for r in historial if r["empleado"].strip().lower() == nombre.strip().lower())
-                if veces >= 2:
-                    empleados_alerta.append(nombre)
-                registro = registrar_dia_familia(nombre, fecha, area_df, ARCHIVO_DIA_FAMILIA)
-                registros.append(registro)
-            else:
-                if empleados_alerta:
-                # Mostrar alerta si algún empleado ha solicitado más de dos veces
-                    st.warning(f"Atención: Los siguientes empleados ya han solicitado el Día de la Familia más de dos veces: {', '.join(empleados_alerta)}")
-                if registros:
-                    pdf = generar_pdf_dia_familia(registros)
-                    st.download_button(
-                        "Descargar PDF Día de la Familia",
-                        pdf,
-                        file_name="dia_familia_solicitud.pdf",
-                        mime="application/pdf"
-                    )
-                    # Enviar correo con los registros del día de la familia
-                    enviar_correo_dia_familia_agrupado(registros)
-                    st.success("Día de la Familia registrado y correo enviado.")
 
-#Permisos   
-    with tabs[3]:
-        #titulo de la pestaña
-        st.markdown("<h3 style='color: #19277F;'>Registrar Permiso 📆</h3>", unsafe_allow_html=True)
-        
-        #Campo para registrar tipo permisos
-        tipo_permiso = st.selectbox("Tipo de Permiso", ["Seleccione un tipo","Cita medica","Medio dia", "Dia completo","Diligencia personal","Permiso especial"])
-        #Campos para ingresar datos del permiso
-        nombre = st.text_input("Nombre empleado", key="pe_nombre")
-        fecha = st.date_input("Fecha del Permiso", key="pe_fecha")          
-         # Campo para seleccionar área de trabajo
-        area_pe = st.selectbox(
-            "Área de trabajo",
-            ["Seleccione un área"] + list(CORREOS_JEFES.keys()),  # Mostrar las áreas disponibles
-            key="pe_area"
-        )
-
-        # Al seleccionar un área, el campo de correo del jefe se actualiza automáticamente
-        if area_pe != "Seleccione un área":
-            correo_jefe = CORREOS_JEFES[area_pe]
-        else:
-            correo_jefe = ""  # Si no se selecciona área, dejar vacío
-
-        # Campo de correo del jefe (se completa automáticamente)
-        correo_jefe_input = st.text_input("Correo del jefe directo", value=correo_jefe, key="pe_correo")
-
-        # Mostrar el correo automáticamente cuando se elige un área
-        #Botón para registrar y enviar el permiso
-        if st.button("Registrar y enviar permiso"):
-            if not nombre or not fecha or not area_pe or tipo_permiso == "Seleccione un tipo":
-                # Mostrar mensaje de error si falta información
-                st.error("Completa todos los campos para registrar el permiso.")
-            else:
-                registro = {"nombre": nombre, "fecha": fecha, "area": area_pe, "tipo": tipo_permiso, "correo_jefe": correo_jefe}
-                #generar pdf registo del permiso
-                pdf = generar_pdf_permiso(registro)
-                st.download_button(
-                    "Descargar PDF Permiso",
-                    pdf,
-                    file_name="permiso_.pdf",
-                    mime="application/pdf"
-
-                ) 
-                #enviar correo con el registro del permiso
-                enviar_correo_permiso(registro)
-                # Mostrar mensaje de éxito
-                st.success("Permiso registrado y notificacion enviada correctamente.")
-#Incapacidades
-    with tabs[4]:
-        st.markdown("<h3 style='color: #19277F;'>Registrar Incapacidad 🏥</h3>", unsafe_allow_html=True)
-       
-        nombre= st.text_input("Nombre empleado", key="in_nombre")
-        fecha = st.date_input("Fecha de registro de la incapacidad", key="in_fecha")          
-        area_pe = st.selectbox("Área de trabajo", ["Logistica","Compras","Ventas","Marketing","Mensajeria","Juridica","Gestion Humana","SST","TI"], key="in_area")     
-        
-        st.subheader("Adjuntar documento")
-        archivo = st.file_uploader("Selecciona un archivo", type=["pdf", "jpg", "jpeg", "png", "docx", "xlsx"])
-        
-        # Definir el correo del destinatario
-        destinatario = "sebastianvibr@gmail.com"  
-        
-        if archivo is not None:
-            # Muestra el nombre del archivo cargado
-            st.write(f"Archivo cargado: {archivo.name}")
-            
-            # Botón para enviar el correo
-            if st.button("Enviar por correo"):
-                # Enviar el archivo por correo
-                if not nombre or not fecha or not area_pe:
-                    st.error("Completa todos los campos antes de enviar la incapacidad.")
-                else:
-                    registro = {
-                        "nombre": nombre,
-                        "fecha": fecha,
-                        "area": area_pe,
-                        "archivo": archivo.name
-                    }
-                    # Llamar a la función para enviar el correo con el archivo adjunto
-                    enviar_correo_incapacidad(archivo, destinatario, nombre, fecha, area_pe)
-                    st.success("Incapacidad enviada correctamente.")
-                
 if __name__ == "__main__":
     main()
 # Línea decorativa
@@ -318,5 +192,6 @@ if __name__ == "__main__":
         </div>
      """, unsafe_allow_html=True)
                       
+
 
 
