@@ -28,7 +28,7 @@ def generar_excel_descarga(df, sheet_name):
 
 #Titulo de la página y diseño
 def main():
-    st.set_page_config(page_title="Solicitudes", layout="wide")
+    st.set_page_config(page_title="Sistema de turnos", layout="wide")
     col1, col2 = st.columns([1, 4])  
     with col1:
         st.image("logo.png", width=200) 
@@ -318,4 +318,5 @@ if __name__ == "__main__":
         </div>
      """, unsafe_allow_html=True)
                       
+
 
