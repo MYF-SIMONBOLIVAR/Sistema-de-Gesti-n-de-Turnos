@@ -297,7 +297,7 @@ def main():
                         mime="application/pdf"
                     )
                     enviar_correo_horas_extra_agrupado(registros)
-                    st.success("Horas extra registradas y correo enviado.")     
+                    st.success("Tiempo extra registrado y correo enviado.")     
 
 
 if __name__ == "__main__":
@@ -310,6 +310,7 @@ if __name__ == "__main__":
         </div>
      """, unsafe_allow_html=True)
                       
+
 
 
 
